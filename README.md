@@ -1,7 +1,7 @@
 # Home-Assistant-Mail-And-Packages-Custom-Card
 A Custom Lovelace card to pull together the mail and packages sensors.
 
-<img src="https://github.com/moralmunky/Home-Assistant-Mail-And-Packages-Custom-Card/blob/master/img/card-image.png?raw=true" alt="Preview of card" />
+<img src="https://github.com/ncecowboy/Home-Assistant-Mail-And-Packages-Custom-Card/blob/master/img/card-image.png?raw=true" alt="Preview of card" />
 
 ## Lovelace GUI Setup
 
@@ -23,7 +23,7 @@ type: Javascript Module
 
 [HACS](https://hacs.xyz) will install the files and add an entry in the Lovelace resource
 * Have [HACS](https://hacs.xyz) installed in your instance of HASS
-* Add URL: **https://github.com/moralmunky/Home-Assistant-Mail-And-Packages-Custom-Card** as a custom repository with Type: **LOVELACE**
+* Add URL: **https://github.com/ncecowboy/Home-Assistant-Mail-And-Packages-Custom-Card** as a custom repository with Type: **LOVELACE**
 * Navigate to the Frontend directory
 * Search for Mail and Packages, then choose install
 * You may need to empty your browser cache for the frontend to recognize the new files.
@@ -45,19 +45,47 @@ type: 'custom:mail-and-packages-card'
 name: Mail Summary
 updated: sensor.mail_updated
 details: true
-image: false
+image: true
+gif_sensor: sensor.mail_image_url
+usps_mail: sensor.mail_usps_mail
+usps_packages: sensor.mail_usps_packages
+ups_packages: sensor.mail_ups_packages
+fedex_packages: sensor.mail_fedex_packages
+amazon_packages: sensor.mail_amazon_packages
+packages_delivered: sensor.mail_packages_delivered
+packages_in_transit: sensor.mail_packages_in_transit
 ```
-Switch to the visual editor and complete the setup by assigning the sensors you have enabled in the [Mail and Packages integration](https://github.com/moralmunky/Home-Assistant-Mail-And-Packages).
+
+Or use the visual editor to complete the setup by assigning the sensors you have enabled in the [Mail and Packages integration](https://github.com/ncecowboy/Home-Assistant-Mail-And-Packages).
+
+#### Required Sensors
+
+* **Mail Updated Sensor**: `sensor.mail_updated` (required) - Timestamp of last update
+
+#### Optional Sensors
+
+Configure these sensors based on what you have enabled in the Mail and Packages integration:
+
+* **USPS Mail Sensor**: `sensor.mail_usps_mail` - Number of mail pieces from USPS Informed Delivery
+* **USPS Packages**: `sensor.mail_usps_packages` - Total USPS packages
+* **UPS Packages**: `sensor.mail_ups_packages` - Total UPS packages
+* **FedEx Packages**: `sensor.mail_fedex_packages` - Total FedEx packages
+* **Amazon Packages**: `sensor.mail_amazon_packages` - Total Amazon packages
+* **Packages Delivered**: `sensor.mail_packages_delivered` - Total packages delivered today
+* **Packages In Transit**: `sensor.mail_packages_in_transit` - Total packages in transit
 
 #### USPS Mail Image Display
-The mail images can be displayed by using the mail_today.gif directly or use a [local file camera entity](https://github.com/moralmunky/Home-Assistant-Mail-And-Packages/wiki/Example-Automations-and-Templates#camera). Use the blue toggle switches to turn either option on or off.
 
-* Mail GIF Location: The mail_today.gif file must be saved in the `www` folder for the front end to load it. If the image is saved directly in the `www` folder you will use the path `/local/mail_today.gif`. Please see the [Mail and Packages Integration](https://github.com/moralmunky/Home-Assistant-Mail-And-Packages/wiki/Configuration-and-Email-Settings#configuration) configuration section for the path the integration should be set to based on the type of HASS installation you are using. Random image file name setting should be turned off. 
+The integration creates two sensors for displaying mail images:
 
-* Camera Entity: Set up a [local file camera entity](https://www.home-assistant.io/integrations/local_file/) described in the [integrations WIKI](https://github.com/moralmunky/Home-Assistant-Mail-And-Packages/wiki/Example-Automations-and-Templates#camera). Set this option to the name of the local file camera entity you created.
+* **GIF Sensor**: `sensor.mail_image_url` - Use this sensor in the card's "GIF Sensor" field to display USPS mail images. The integration automatically manages image files with random names for security.
 
+* **Camera Entity**: `camera.mail_usps_camera` - Alternatively, use the camera entity created by the integration. Set this in the card's "Camera Entity" field.
+
+**Note**: The integration now uses random image file names for security. You no longer need to manually configure image paths.
 
 #### Delivery Message Sensor
-The delivery message sensor, `sensor.mail_delieveries`, is not created by the [Mail and Packages Integration](https://github.com/moralmunky/Home-Assistant-Mail-And-Packages/wiki/Example-Automations-and-Templates#post-0115). You must create a [template sensor](https://www.home-assistant.io/integrations/template/). This is left out of the integration on purpose so they can customize as they see fit.
 
-<img src="https://github.com/moralmunky/Home-Assistant-Mail-And-Packages-Custom-Card/blob/master/img/visual-editor.png?raw=true" alt="Preview of visual-editor" />
+The delivery message sensor (e.g., `sensor.mail_deliveries`) is not created by the [Mail and Packages Integration](https://github.com/ncecowboy/Home-Assistant-Mail-And-Packages). You must create a [template sensor](https://www.home-assistant.io/integrations/template/) if you want custom delivery messages. This is left out of the integration on purpose so you can customize it as you see fit.
+
+<img src="https://github.com/ncecowboy/Home-Assistant-Mail-And-Packages-Custom-Card/blob/master/img/visual-editor.png?raw=true" alt="Preview of visual-editor" />
