@@ -1,6 +1,8 @@
 # Home-Assistant-Mail-And-Packages-Custom-Card
 A Custom Lovelace card to pull together the mail and packages sensors.
 
+> **⚠️ Important**: If your card stopped working after updating the Mail and Packages integration, see the [Migration Guide](MIGRATION.md) for instructions on updating your configuration.
+
 <img src="https://github.com/ncecowboy/Home-Assistant-Mail-And-Packages-Custom-Card/blob/master/img/card-image.png?raw=true" alt="Preview of card" />
 
 ## Lovelace GUI Setup
