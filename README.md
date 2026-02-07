@@ -78,7 +78,7 @@ Configure these sensors based on what you have enabled in the Mail and Packages 
 
 #### USPS Mail Image Display
 
-The integration creates two sensors for displaying mail images:
+The integration creates entities for displaying mail images:
 
 * **GIF Sensor**: `sensor.mail_image_url` - Use this sensor in the card's "GIF Sensor" field to display USPS mail images. The integration automatically manages image files with random names for security.
 

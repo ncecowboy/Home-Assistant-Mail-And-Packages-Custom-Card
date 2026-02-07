@@ -22,12 +22,12 @@ Add the card configuration to the cards: section of the view you want the card t
 Minimal Setup:
 The remaining sensors can be added in the card configurator.
 ```
-type: 'custom:mail-and-packages-card'
-name: Mail Summary
-updated: sensor.mail_updated
-details: true
-image: true
-gif_sensor: sensor.mail_image_url
+- type: 'custom:mail-and-packages-card'
+  name: Mail Summary
+  updated: sensor.mail_updated
+  details: true
+  image: true
+  gif_sensor: sensor.mail_image_url
 ```
 
 ## Sensor Configuration

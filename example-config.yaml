@@ -3,11 +3,13 @@
 # with the correct sensor names from the Mail and Packages integration (v1.0.0+)
 
 # Minimal configuration (required fields only)
+---
 type: 'custom:mail-and-packages-card'
 name: Mail Summary
 updated: sensor.mail_updated  # Required
 
 # Full configuration with all optional sensors
+---
 type: 'custom:mail-and-packages-card'
 name: Mail and Packages Summary
 details: true  # Show details section (default: true)
