@@ -35,7 +35,7 @@ The remaining sensors can be added in the card configurator.
 The card works with sensors from the [Mail and Packages integration](https://github.com/ncecowboy/Home-Assistant-Mail-And-Packages). Configure the following sensors in the card's visual editor:
 
 ### Required
-* **updated**: `sensor.mail_updated` - Timestamp of last update
+* **updated**: `sensor.mail_updated` - Timestamp of last update (displayed in local time format)
 
 ### Optional Package Sensors
 * **usps_packages**: `sensor.mail_usps_packages`
