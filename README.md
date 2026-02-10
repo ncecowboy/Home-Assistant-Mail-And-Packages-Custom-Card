@@ -62,7 +62,7 @@ Or use the visual editor to complete the setup by assigning the sensors you have
 
 #### Required Sensors
 
-* **Mail Updated Sensor**: `sensor.mail_updated` (required) - Timestamp of last update
+* **Mail Updated Sensor**: `sensor.mail_updated` (required) - Timestamp of last update (displayed in local time format)
 
 #### Optional Sensors
 

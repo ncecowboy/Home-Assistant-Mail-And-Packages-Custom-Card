@@ -56,6 +56,18 @@ class MailAndPackagesCard extends LitElement {
         return hasConfigOrEntityChanged(this, changedProps);
     }
 
+    formatDateTime(dateTimeString) {
+        try {
+            const date = new Date(dateTimeString);
+            if (isNaN(date.getTime())) {
+                return dateTimeString;
+            }
+            return date.toLocaleString();
+        } catch (e) {
+            return dateTimeString;
+        }
+    }
+
     render() {
         if (!this._config || !this.hass) {
             return html ``;
@@ -88,7 +100,7 @@ class MailAndPackagesCard extends LitElement {
         ${this._config.details !== false ? this.renderDetails(stateObj) : ""}
         ${this._config.image !== false ? this.renderImage(stateObj) : ""}
         ${this._config.camera !== false ? this.renderCamera(stateObj) : ""}
-        <span class="usps_update">1.0.0 Checked: ${stateObj.state}</span>
+        <span class="usps_update">1.0.0 Checked: ${this.formatDateTime(stateObj.state)}</span>
       </ha-card>
     `;
     }
