@@ -2,10 +2,7 @@ const LitElement = customElements.get("hui-masonry-view")
   ? Object.getPrototypeOf(customElements.get("hui-masonry-view"))
   : Object.getPrototypeOf(customElements.get("hui-view"));
 const html = LitElement.prototype.html;
-
-const curDatetime = new Date();
-
-const datetime = curDatetime.getMonth().toString() + curDatetime.getDate().toString() + curDatetime.getFullYear().toString() + curDatetime.getHours().toString() + curDatetime.getMinutes().toString();
+const css = LitElement.prototype.css;
 
 const fireEvent = (node, type, detail, options) => {
     options = options || {};
@@ -95,12 +92,11 @@ class MailAndPackagesCard extends LitElement {
         }
 
         return html `
-      ${this.renderStyle()}
       <ha-card @click="${this._handleClick}">
         ${this._config.details !== false ? this.renderDetails(stateObj) : ""}
         ${this._config.image !== false ? this.renderImage(stateObj) : ""}
         ${this._config.camera !== false ? this.renderCamera(stateObj) : ""}
-        <span class="usps_update">1.0.0 Checked: ${this.formatDateTime(stateObj.state)}</span>
+        <span class="usps_update">1.1.2 Checked: ${this.formatDateTime(stateObj.state)}</span>
       </ha-card>
     `;
     }
@@ -200,7 +196,6 @@ class MailAndPackagesCard extends LitElement {
         }
         
         const gif_sensor = this._config.gif_sensor ? this.hass.states[this._config.gif_sensor].state : false;
-        const lang = this.hass.selectedLanguage || this.hass.language;
 
         this.numberElements++;
         return html `
@@ -210,14 +205,15 @@ class MailAndPackagesCard extends LitElement {
 
     renderCamera(camera) {
         const camera_entity = this._config.camera_entity;
-        if (!camera || camera.length === 0 || !camera_entity || camera_entity.length === 0) {
+        if (!camera || !camera_entity || camera_entity.length === 0) {
             return html ``;
         }
 
         const cameraObjt = this._config.camera_entity in this.hass.states ? this.hass.states[this._config.camera_entity] : null;
-        const camera_url = this.hass.states[this._config.camera_entity].attributes.entity_picture;
-
-        const lang = this.hass.selectedLanguage || this.hass.language;
+        if (!cameraObjt) {
+            return html ``;
+        }
+        const camera_url = cameraObjt.attributes.entity_picture;
 
         this.numberElements++;
         return html `
@@ -235,9 +231,8 @@ class MailAndPackagesCard extends LitElement {
         return 3;
     }
 
-    renderStyle() {
-        return html `
-            <style>
+    static get styles() {
+        return css`
                 ha-card {
                     cursor: pointer;
                     margin: auto;
@@ -323,8 +318,7 @@ class MailAndPackagesCard extends LitElement {
                 .usps_update {
                     font-size: .7em;
                 }
-        </style>
-    `;
+        `;
     }
 
 }
