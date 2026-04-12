@@ -11,13 +11,6 @@ const fireEvent = (node, type, detail, options) => {
     return event;
 };
 
-if (
-    !customElements.get("ha-switch") &&
-    customElements.get("paper-toggle-button")
-) {
-    customElements.define("ha-switch", customElements.get("paper-toggle-button"));
-}
-
 const LitElement = customElements.get("hui-masonry-view") ?
     Object.getPrototypeOf(customElements.get("hui-masonry-view")) :
     Object.getPrototypeOf(customElements.get("hui-view"));
@@ -101,335 +94,117 @@ export class MailAndPackagesCardEditor extends LitElement {
             return html ``;
         }
 
-        const entities = Object.keys(this.hass.states).filter(
-            (eid) => eid.substr(0, eid.indexOf(".")) === "sensor"
-        );
-
-        const camera_entities = Object.keys(this.hass.states).filter(
-            (eid) => eid.substr(0, eid.indexOf(".")) === "camera"
-        );
-
         return html `
       <div class="card-config">
-    Version: 1.0.0
+    Version: 1.1.2
         <div>
-          <paper-input
+          <ha-textfield
             label="Name"
             .value="${this._name}"
             .configValue="${"name"}"
-            @value-changed="${this._valueChanged}"
-          ></paper-input>
+            @input="${this._valueChanged}"
+          ></ha-textfield>
             <ha-switch
             .checked=${this._details}
             .configValue="${"details"}"
             @change="${this._valueChanged}"
             >Show Details</ha-switch>
-          ${customElements.get("ha-entity-picker")
-            ? html`
-                <ha-entity-picker
-                label="Mail Updated Sensor"
-                  .hass="${this.hass}"
-                  .value="${this._updated}"
-                  .configValue=${"updated"}
-                  domain-filter="sensor"
-                  @change="${this._valueChanged}"
-                  allow-custom-entity
-                ></ha-entity-picker>
-              `
-            : html`
-                <paper-dropdown-menu
-                  label="Mail Updated Sensor"
-                  @value-changed="${this._valueChanged}"
-                  .configValue="${"updated"}"
-                >
-                  <paper-listbox
-                    slot="dropdown-content"
-                    .selected="${entities.indexOf(this._updated)}"
-                  >
-                    ${entities.map((updated) => {
-                      return html`
-                        <paper-item>${updated}</paper-item>
-                      `;
-                    })}
-                  </paper-listbox>
-                </paper-dropdown-menu>
-              `}
-          ${customElements.get("ha-entity-picker")
-            ? html`
-                <ha-entity-picker
-                label="Delivery Message Sensor"
-                  .hass="${this.hass}"
-                  .value="${this._deliveries_message}"
-                  .configValue=${"deliveries_message"}
-                  domain-filter="sensor"
-                  @change="${this._valueChanged}"
-                  allow-custom-entity
-                ></ha-entity-picker>
-              `
-            : html`
-                <paper-dropdown-menu
-                  label="Delivery Message Sensor"
-                  @value-changed="${this._valueChanged}"
-                  .configValue="${"deliveries_message"}"
-                >
-                  <paper-listbox
-                    slot="dropdown-content"
-                    .selected="${entities.indexOf(this._deliveries_message)}"
-                  >
-                    ${entities.map((deliveries_message) => {
-                      return html`
-                        <paper-item>${deliveries_message}</paper-item>
-                      `;
-                    })}
-                  </paper-listbox>
-                </paper-dropdown-menu>
-              `}
-         ${customElements.get("ha-entity-picker")
-            ? html`
-                <ha-entity-picker
-                label="Packages Delivered Sensor"
-                  .hass="${this.hass}"
-                  .value="${this._packages_delivered}"
-                  .configValue=${"packages_delivered"}
-                  domain-filter="sensor"
-                  @change="${this._valueChanged}"
-                  allow-custom-entity
-                ></ha-entity-picker>
-              `
-            : html`
-                <paper-dropdown-menu
-                  label="Packages Delivered Sensor"
-                  @value-changed="${this._valueChanged}"
-                  .configValue="${"packages_delivered"}"
-                >
-                  <paper-listbox
-                    slot="dropdown-content"
-                    .selected="${entities.indexOf(this._packages_delivered)}"
-                  >
-                    ${entities.map((packages_delivered) => {
-                      return html`
-                        <paper-item>${packages_delivered}</paper-item>
-                      `;
-                    })}
-                  </paper-listbox>
-                </paper-dropdown-menu>
-              `}
-          ${customElements.get("ha-entity-picker")
-            ? html`
-                <ha-entity-picker
-                label="Packages In Transit Sensor"
-                  .hass="${this.hass}"
-                  .value="${this._packages_in_transit}"
-                  .configValue=${"packages_in_transit"}
-                  domain-filter="sensor"
-                  @change="${this._valueChanged}"
-                  allow-custom-entity
-                ></ha-entity-picker>
-              `
-            : html`
-                <paper-dropdown-menu
-                  label="Packages In Transit Sensor"
-                  @value-changed="${this._valueChanged}"
-                  .configValue="${"packages_in_transit"}"
-                >
-                  <paper-listbox
-                    slot="dropdown-content"
-                    .selected="${entities.indexOf(this._packages_in_transit)}"
-                  >
-                    ${entities.map((packages_in_transit) => {
-                      return html`
-                        <paper-item>${packages_in_transit}</paper-item>
-                      `;
-                    })}
-                  </paper-listbox>
-                </paper-dropdown-menu>
-              `}
-              ${customElements.get("ha-entity-picker")
-            ? html`
-                <ha-entity-picker
-                label="FedEx Package Sensor"
-                  .hass="${this.hass}"
-                  .value="${this._fedex_packages}"
-                  .configValue=${"fedex_packages"}
-                  domain-filter="sensor"
-                  @change="${this._valueChanged}"
-                  allow-custom-entity
-                ></ha-entity-picker>
-              `
-            : html`
-                <paper-dropdown-menu
-                  label="FedEx Package Sensor"
-                  @value-changed="${this._valueChanged}"
-                  .configValue="${"fedex_packages"}"
-                >
-                  <paper-listbox
-                    slot="dropdown-content"
-                    .selected="${entities.indexOf(this._fedex_packages)}"
-                  >
-                    ${entities.map((fedex_packages) => {
-                      return html`
-                        <paper-item>${fedex_packages}</paper-item>
-                      `;
-                    })}
-                  </paper-listbox>
-                </paper-dropdown-menu>
-              `}
-              ${customElements.get("ha-entity-picker")
-            ? html`
-                <ha-entity-picker
-                label="UPS Package Sensor"
-                  .hass="${this.hass}"
-                  .value="${this._ups_packages}"
-                  .configValue=${"ups_packages"}
-                  domain-filter="sensor"
-                  @change="${this._valueChanged}"
-                  allow-custom-entity
-                ></ha-entity-picker>
-              `
-            : html`
-                <paper-dropdown-menu
-                  label="UPS Package Sensor"
-                  @value-changed="${this._valueChanged}"
-                  .configValue="${"ups_packages"}"
-                >
-                  <paper-listbox
-                    slot="dropdown-content"
-                    .selected="${entities.indexOf(this._ups_packages)}"
-                  >
-                    ${entities.map((ups_packages) => {
-                      return html`
-                        <paper-item>${ups_packages}</paper-item>
-                      `;
-                    })}
-                  </paper-listbox>
-                </paper-dropdown-menu>
-              `}
-              ${customElements.get("ha-entity-picker")
-            ? html`
-                <ha-entity-picker
-                label="USPS Package Sensor"
-                  .hass="${this.hass}"
-                  .value="${this._usps_packages}"
-                  .configValue=${"usps_packages"}
-                  domain-filter="sensor"
-                  @change="${this._valueChanged}"
-                  allow-custom-entity
-                ></ha-entity-picker>
-              `
-            : html`
-                <paper-dropdown-menu
-                  label="USPS Package Sensor"
-                  @value-changed="${this._valueChanged}"
-                  .configValue="${"usps_packages"}"
-                >
-                  <paper-listbox
-                    slot="dropdown-content"
-                    .selected="${entities.indexOf(this._usps_packages)}"
-                  >
-                    ${entities.map((usps_packages) => {
-                      return html`
-                        <paper-item>${usps_packages}</paper-item>
-                      `;
-                    })}
-                  </paper-listbox>
-                </paper-dropdown-menu>
-              `}
-              ${customElements.get("ha-entity-picker")
-            ? html`
-                <ha-entity-picker
-                label="Amazon Package Sensor"
-                .hass="${this.hass}"
-                .value="${this._amazon_packages}"
-                .configValue=${"amazon_packages"}
-                domain-filter="sensor"
-                @change="${this._valueChanged}"
-                allow-custom-entity
-              ></ha-entity-picker>
-            `
-          : html`
-              <paper-dropdown-menu
-                label="Amazon Package Sensor"
-                @value-changed="${this._valueChanged}"
-                .configValue="${"amazon_packages"}"
-              >
-                <paper-listbox
-                  slot="dropdown-content"
-                  .selected="${entities.indexOf(this._amazon_packages)}"
-                >
-                  ${entities.map((amazon_packages) => {
-                    return html`
-                      <paper-item>${amazon_packages}</paper-item>
-                    `;
-                  })}
-                </paper-listbox>
-              </paper-dropdown-menu>
-            `}
-            ${customElements.get("ha-entity-picker")
-          ? html`
-              <ha-entity-picker
-                label="USPS Mail Sensor"
-                  .hass="${this.hass}"
-                  .value="${this._usps_mail}"
-                  .configValue=${"usps_mail"}
-                  domain-filter="sensor"
-                  @change="${this._valueChanged}"
-                  allow-custom-entity
-                ></ha-entity-picker>
-              `
-            : html`
-                <paper-dropdown-menu
-                  label="USPS Mail Sensor"
-                  @value-changed="${this._valueChanged}"
-                  .configValue="${"usps_mail"}"
-                >
-                  <paper-listbox
-                    slot="dropdown-content"
-                    .selected="${entities.indexOf(this._usps_mail)}"
-                  >
-                    ${entities.map((usps_mail) => {
-                      return html`
-                        <paper-item>${usps_mail}</paper-item>
-                      `;
-                    })}
-                  </paper-listbox>
-                </paper-dropdown-menu>
-              `}
+          <ha-entity-picker
+            label="Mail Updated Sensor"
+            .hass="${this.hass}"
+            .value="${this._updated}"
+            .configValue=${"updated"}
+            domain-filter="sensor"
+            @change="${this._valueChanged}"
+            allow-custom-entity
+          ></ha-entity-picker>
+          <ha-entity-picker
+            label="Delivery Message Sensor"
+            .hass="${this.hass}"
+            .value="${this._deliveries_message}"
+            .configValue=${"deliveries_message"}
+            domain-filter="sensor"
+            @change="${this._valueChanged}"
+            allow-custom-entity
+          ></ha-entity-picker>
+          <ha-entity-picker
+            label="Packages Delivered Sensor"
+            .hass="${this.hass}"
+            .value="${this._packages_delivered}"
+            .configValue=${"packages_delivered"}
+            domain-filter="sensor"
+            @change="${this._valueChanged}"
+            allow-custom-entity
+          ></ha-entity-picker>
+          <ha-entity-picker
+            label="Packages In Transit Sensor"
+            .hass="${this.hass}"
+            .value="${this._packages_in_transit}"
+            .configValue=${"packages_in_transit"}
+            domain-filter="sensor"
+            @change="${this._valueChanged}"
+            allow-custom-entity
+          ></ha-entity-picker>
+          <ha-entity-picker
+            label="FedEx Package Sensor"
+            .hass="${this.hass}"
+            .value="${this._fedex_packages}"
+            .configValue=${"fedex_packages"}
+            domain-filter="sensor"
+            @change="${this._valueChanged}"
+            allow-custom-entity
+          ></ha-entity-picker>
+          <ha-entity-picker
+            label="UPS Package Sensor"
+            .hass="${this.hass}"
+            .value="${this._ups_packages}"
+            .configValue=${"ups_packages"}
+            domain-filter="sensor"
+            @change="${this._valueChanged}"
+            allow-custom-entity
+          ></ha-entity-picker>
+          <ha-entity-picker
+            label="USPS Package Sensor"
+            .hass="${this.hass}"
+            .value="${this._usps_packages}"
+            .configValue=${"usps_packages"}
+            domain-filter="sensor"
+            @change="${this._valueChanged}"
+            allow-custom-entity
+          ></ha-entity-picker>
+          <ha-entity-picker
+            label="Amazon Package Sensor"
+            .hass="${this.hass}"
+            .value="${this._amazon_packages}"
+            .configValue=${"amazon_packages"}
+            domain-filter="sensor"
+            @change="${this._valueChanged}"
+            allow-custom-entity
+          ></ha-entity-picker>
+          <ha-entity-picker
+            label="USPS Mail Sensor"
+            .hass="${this.hass}"
+            .value="${this._usps_mail}"
+            .configValue=${"usps_mail"}
+            domain-filter="sensor"
+            @change="${this._valueChanged}"
+            allow-custom-entity
+          ></ha-entity-picker>
           <ha-switch
             .checked=${this._image}
             .configValue="${"image"}"
             @change="${this._valueChanged}"
             >Show Image</ha-switch
           >
-            ${customElements.get("ha-entity-picker")
-          ? html`
-              <ha-entity-picker
-                label="GIF Sensor"
-                  .hass="${this.hass}"
-                  .value="${this._gif_sensor}"
-                  .configValue=${"gif_sensor"}
-                  domain-filter="sensor"
-                  @change="${this._valueChanged}"
-                  allow-custom-entity
-                ></ha-entity-picker>
-              `
-            : html`
-                <paper-dropdown-menu
-                  label="GIF Sensor"
-                  @value-changed="${this._valueChanged}"
-                  .configValue="${"gif_sensor"}"
-                >
-                  <paper-listbox
-                    slot="dropdown-content"
-                    .selected="${entities.indexOf(this._gif_sensor)}"
-                  >
-                    ${entities.map((gif_sensor) => {
-                      return html`
-                        <paper-item>${gif_sensor}</paper-item>
-                      `;
-                    })}
-                  </paper-listbox>
-                </paper-dropdown-menu>
-              `}
+          <ha-entity-picker
+            label="GIF Sensor"
+            .hass="${this.hass}"
+            .value="${this._gif_sensor}"
+            .configValue=${"gif_sensor"}
+            domain-filter="sensor"
+            @change="${this._valueChanged}"
+            allow-custom-entity
+          ></ha-entity-picker>
 
         <ha-switch
             .checked=${this._camera}
@@ -438,36 +213,15 @@ export class MailAndPackagesCardEditor extends LitElement {
             >Show Camera</ha-switch
           >
 
-        ${customElements.get("ha-entity-picker")
-            ? html`
-                <ha-entity-picker
-                label="Camera Entity"
-                  .hass="${this.hass}"
-                  .value="${this._camera_entity}"
-                  .configValue=${"camera_entity"}
-                  domain-filter="camera"
-                  @change="${this._valueChanged}"
-                  allow-custom-entity
-                ></ha-entity-picker>
-              `
-            : html`
-                <paper-dropdown-menu
-                  label="Camera Entity"
-                  @value-changed="${this._valueChanged}"
-                  .configValue="${"camera_entity"}"
-                >
-                  <paper-listbox
-                    slot="dropdown-content"
-                    .selected="${camera_entities.indexOf(this._camera_entity)}"
-                  >
-                    ${camera_entities.map((camera_entity) => {
-                      return html`
-                        <paper-item>${camera_entity}</paper-item>
-                      `;
-                    })}
-                  </paper-listbox>
-                </paper-dropdown-menu>
-              `}
+        <ha-entity-picker
+            label="Camera Entity"
+            .hass="${this.hass}"
+            .value="${this._camera_entity}"
+            .configValue=${"camera_entity"}
+            domain-filter="camera"
+            @change="${this._valueChanged}"
+            allow-custom-entity
+          ></ha-entity-picker>
         </div>
       </div>
     `;
